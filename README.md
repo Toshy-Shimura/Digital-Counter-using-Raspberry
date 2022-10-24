@@ -1,5 +1,4 @@
 # Digital counter using raspberry pico
-Digital counter using ultrasonic sensor and raspberry pi pico W
 * Rasberry pi pico W
 * Ultrasonic Sensor HC-SR04
 * LCD Display 1602  (16x2)
@@ -32,7 +31,7 @@ Digital counter using ultrasonic sensor and raspberry pi pico W
 | HC-SR04   |   $4.50 |
 | LCD 1602A      |    $1.26|
 
-###Block diagram
+###Block diagram``
 
 ```flow
 st=>start: 
