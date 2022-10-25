@@ -30,7 +30,7 @@ class HTMLPAGE(object):
       <h2>Counter using Raspberry Pi Pico W</h2>
       <p>
         <i class="fas fa-thermometer-half" style="color:#059e8a;"></i> 
-        <span class="bme-labels">Cuenta:</span> 
+        <span class="bme-labels">Count: :</span> 
         <span>"""+str(self.counter)+"""</span>
       </p>
 
