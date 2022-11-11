@@ -1,6 +1,17 @@
-import network
+import network, utime
 import usocket as socket
 from page import HTMLPAGE
+from gpio_lcd import GpioLcd
+from machine import Pin
+
+lcdObj = GpioLcd(
+d4_pin=Pin(21),
+d5_pin=Pin(22),
+d6_pin=Pin(26),
+d7_pin=Pin(27),
+rw_pin=Pin(19), rs_pin = Pin(18), enable_pin = Pin(20), 
+num_lines=2,
+num_columns=16)
 
 class wifi(object):
     def __init__(self, ssid: str, password: str, active: bool):
@@ -16,8 +27,12 @@ class wifi(object):
 
 
         if wlan.isconnected():
-            print(f"{wlan.ifconfig()}")
-
+            status = wlan.ifconfig()
+            ipsend = status[0]
+            print(f"{status[0]}")
+            utime.sleep(1)
+            lcdObj.move_to(0, 0)
+            lcdObj.putstr(status[0])
         else:
             print("Error")
             wlan.active(not self.active)
@@ -29,4 +44,3 @@ class wifi(object):
         self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.s.bind(self.addr)
         self.s.listen(1)
-        
