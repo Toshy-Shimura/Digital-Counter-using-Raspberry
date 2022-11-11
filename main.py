@@ -23,13 +23,10 @@ num_columns=16)
 dinoLeft = bytearray([0x00,0x1C,0x1D,0x0D,0x1F,0x0E,0x0A,0x1E])
 dinoRight = bytearray([0x00,0x07,0x17,0x16,0x1F,0x0E,0x0A,0x0F])
 
-lcdObj.move_to(0, 0)
-lcdObj.putstr("DIGITAL COUNTER")
-lcdObj.move_to(0, 1)
+wifiObj = wifi("WarningVirus2", "hp552eslacontrasenia", True)
 
-
-wifiObj = wifi("YOURWIFINAME", "YOURWIFIPASS", True)
-
+reset = Pin(15, Pin.IN, Pin.PULL_DOWN)
+pause = Pin(14, Pin.IN, Pin.PULL_DOWN)
 
 def core1():
 
@@ -39,6 +36,25 @@ def core1():
         
         ultra.HCSR04()
         
+        if pause.value() == 1:
+            
+            print("PAUSADO")
+            lcdObj.move_to(0, 1)
+            lcdObj.putstr(f"Pausa:")
+            utime.sleep_ms(250)
+            
+            while pause.value() == 0:
+                None
+                
+        if reset.value() == 1:
+            count = 0
+            print("RESETEANDO CUENTA")
+            lcdObj.move_to(0, 1)
+            lcdObj.putstr(f"Count: {count}        ")
+            
+            while reset.value() == 1:
+                utime.sleep_ms(50)
+            
         if ultra.distance < 15:
             count=count+1
             print(f"Count: {count}")
@@ -47,9 +63,13 @@ def core1():
             while ultra.distance < 15:
                 ultra.HCSR04()
                 utime.sleep_ms(50)
-
+                
 def core2():
     wifiObj.connect()
+    utime.sleep(5)
+    lcdObj.move_to(0, 0)
+    lcdObj.putstr("DIGITAL COUNTER")
+    lcdObj.move_to(0, 1)
 
     while True:
             pageObj = HTMLPAGE(counter = count)
@@ -64,6 +84,8 @@ def core2():
             cl.send('HTTP/1.0 200 OK\r\nContent-type: text/html\r\n\r\n')
             cl.send(response)
             cl.close()
+            
+            
 
 _thread.start_new_thread(core1, ())
 
